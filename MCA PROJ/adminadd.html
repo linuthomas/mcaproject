@@ -1,0 +1,164 @@
+<html>
+	<head>
+
+    </head>
+	<body>
+		<html>
+<head ><b>EMPLOYEE DETAILS</b></head>
+<title>EMPLOYEEDETAILS</title>
+<body align="center">
+<!--<div class="top-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-7 col-sm-6 col-xs-12">
+                    <ul>
+                        <li>+ 180-123-4567 / 8910</li>
+                        <li>|</li>
+                        <li>info@demo.com</li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-5 col-sm-6 col-xs-12">
+                    <ul>
+                        <li><a href="#">Home</a> </li>
+                        <li>|</li>
+                        <li><a href="#">About us</a> </li>
+                        <li>|</li>
+                        <li><a href="contact-us.html">Contact us</a></li>
+                        <li>|</li>
+                        <li><a href="#">Log out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>-->
+
+<form method="post"action="">
+
+
+
+			
+			<table border="1" width="70%" cellpadding="4" cellspacing="5" align="center">
+				<tr><td colspan="4" align="center"><font color="blue" style="bold" >ADD EMPLOYEE</font></td></tr>
+				<tr><td colspan="2" align="center"><font color="green" style="bold">PERSONAL DETAILS</td><td align="center" colspan="2"><font color="green" style="bold">JOB DETAILS</td></tr>
+				<tr>
+				<td> Employee ID:</td><td><input type="text" name="txtid"></td>
+				<td> Designation:</td><td><input type="text" name="txtdes"></td>
+			    </tr>
+				<td> Name:</td><td><input type="text" name="txtname"></td>
+				<td> Type of employee:</td><td><input type="text" name="txttype"></td>
+				</tr>
+				
+				<tr>
+				<td>Sex:</td><td><input type="radio" name="sex" value="m">Male<input type="radio" name="sex" value="f">Female</td>
+				<td>Date of Join:</td>
+				<td><input type="date" name="doj">
+				</tr>
+				<tr><td>DOB:</td>
+				<td><input type="date" name="datedob">
+				<td>Branch:</td><td><input type="text" name="txtbranch"></td>
+				<!--<td>Course:</td>
+				<td><select name="district">
+					<option>MCA</option>       
+    					<option>MBA</option>       
+				        <option>B-tech</option>       
+				        <option>M-tech</option>       
+   				        <option>Ernakulam</option>       
+    					<option>Palakadu</option>       
+    					<option>Kozhikode</option>       
+    					<option>Trissur</option>       
+    					<option>Kasrakode</option>       
+    					<option>alapuzha</option>       
+    					<option>iduki</option>       
+    					<option>malapuram</option>       
+    				
+				   </select>	</td>-->
+				</tr>
+				<tr>
+				<td>Mobile:</td><td><input type="number" name="txtphn"></td>
+			
+				<td>Department:</td><td><input type="text" name="txtdept"></td>
+				<tr>
+				<td>Email:</td><td><input type="text" name="txtemail"></td>
+				<td>Basic Pay:</td><td><input type="number" name="txtpay"></td>
+				</tr>
+				<tr><td colspan="2" align="center"><font color="green" style="bold">PERMANENT ADDRESS</td><td align="center" colspan="2"><font color="green" style="bold">PRESENT ADDRESS</td></tr>
+				<tr>
+				<td> House Name:</td><td><input type="text" name="txthname"></td>
+				<td> House Name:</td><td><input type="text" name="txthn"></td>
+			    </tr>
+				<tr>
+				<td> Street Name:</td><td><input type="text" name="txtsname"></td>
+				<td> Street Name:</td><td><input type="text" name="txtsn"></td>
+			    </tr>
+				<tr>
+				<td> District:</td><td><input type="text" name="txtdis"></td>
+				<td> District:</td><td><input type="text" name="txtds"></td>
+			    </tr>
+				<tr>
+				<td> State:</td><td><input type="text" name="txtstate"></td>
+				<td> State:</td><td><input type="text" name="txtst"></td>
+			    </tr>
+				<tr>
+				<td> Pincode:</td><td><input type="text" name="txtpin"></td>
+				<td> Pincode:</td><td><input type="text" name="txtpn"></td>
+			    </tr>
+				
+				<tr>
+                                                                      <td>
+                                                                     <input type="submit" name="submit">
+				</td>
+<tr>
+				
+			</table>
+		</form>
+<?php
+if (isset ($_POST["submit"]))
+{
+include("connection.php");
+$name=$_POST["txtname"];
+$sex=$_POST["sex"];
+$dob=$_POST["datedob"];
+$mobile=$_POST["txtphn"];
+$email=$_POST["txtemail"];
+$hname=$_POST["txthname"];
+$stname=$_POST["txtsname"];
+$dist=$_POST["txtdis"];
+$state=$_POST["txtstate"];
+$pin=$_POST["txtpin"];
+$desig=$_POST["txtdes"];
+$type=$_POST["txttype"];
+$doj=$_POST["doj"];
+$branch=$_POST["txtbranch"];
+$depart=$_POST["txtdept];
+$sbasic=$_POST["txtpay"];
+$hnam=$_POST["txthn"];
+$sn=$_POST["txtsn"];
+$dis=$_POST["txtds"];
+$st=$_POST["txtst"];
+$pincod=$_POST["txtpn"];
+$id=100;
+$s=mysqli_query($con,"select * from addemp order by uid desc");
+//$filename="";
+while($row=mysqli_fetch_array($s))
+{
+  $uid=$row[0];
+  break;
+}
+$uid++; 
+/*$filename=$_FILES["fileimage1"]["name"];
+$x=split("[.]",$filename);
+$n=count($x);
+$n--;
+$ext=$x[$name];
+$filename="$name.$ext";
+move_uploaded_file($_FILES["fileimage1"]["tmp_name"],"./images/$filename");*/
+$regdate=date("Y")."-".date("m")."-".date("d");
+  $s= "insert into addemp values($uid,'$name','$sex','$dob','$mobile','$email','$hname','$stname','$dist','$state','$pin','$desig','$type','$rdoj','$branch','$depart','$sbasic','$hnam','$hn','$dis','$st','$pincod')";
+  echo $s;
+ mysqli_query($con,$s);
+echo "success";
+echo $s;
+}
+?>
+	</body>
+</html>

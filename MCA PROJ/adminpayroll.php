@@ -1,3 +1,26 @@
+<?php
+ 	$db=mysqli_connect("localhost","root","","hrm");
+						
+  $query = "SELECT loginid FROM addemp";
+     
+  $result = $db->query($query);
+
+  while($row = $result->fetch_assoc()){
+    $categories[] = array("id" => $row['loginid'], "val" => $row['loginid']);
+  }
+
+  $query =  "SELECT loginid,basicpay FROM addemp";
+  $result = $db->query($query);
+
+  while($row = $result->fetch_assoc()){
+    $subcats[$row['loginid']][] = array("id" => $row['basicpay'], "val" => $row['basicpay']);
+  }
+
+  $jsonCats = json_encode($categories);
+  $jsonSubCats = json_encode($subcats);
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,9 +50,129 @@
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	  
     <![endif]-->
+	<script type='text/javascript'>
+	 var x = 0;
+        var u= 0;
+		
+      <?php
+       echo "var categories = $jsonCats; \n";
+       echo "var subcats = $jsonSubCats; \n";
+      ?>
+      function loadCategories(){
+        var select = document.getElementById("categoriesSelect");
+        select.onchange = updateSubCats;
+        for(var i = 0; i < categories.length; i++){
+          select.options[i] = new Option(categories[i].val,categories[i].id);          
+        }
+      }
+      function updateSubCats(){
+        var catSelect = this;
+        var catid = this.value;
+        var subcatSelect = document.getElementById("subcatsSelect");
+        subcatSelect.options.length = 0; //delete all options if any present
+        for(var i = 0; i < subcats[catid].length; i++){
+          subcatSelect.options[i] = new Option(subcats[catid][i].val,subcats[catid][i].id);
+        }
+		calc();
+      }
+	  
+
+ 
+		
+	
+        function calc()
+		{
+			u=document.getElementById('subcatsSelect').value;
+			
+			y=parseInt(u);	
+			
+				
+	  if(y<20000)
+	{
+		hra=y/100*8;
+		da=y/100*7;
+		ma=y/100*3;
+		gross=y+hra+da+ma;
+		pf=y/100*9;
+		tax=y/100*2;
+		netpay=gross-pf-tax;
+		 document.getElementById('hra').value = hra;
+		  document.getElementById('da').value = da;
+		   document.getElementById('ma').value = ma;
+		    document.getElementById('gross').value = gross;
+			 document.getElementById('pf').value = pf;
+			  document.getElementById('tax').value = tax;
+			   document.getElementById('net').value = netpay;
+		
+		
+	}
+		else
+		{
+		hra=y/100*9;
+		da=y/100*10;
+		ma=y/100*4;
+		gross=y+hra+da+ma;
+		pf=y/100*9;
+		tax=y/100*3;
+		netpay=gross-pf-tax;
+		 document.getElementById('hra').value = hra;
+		  document.getElementById('da').value = da;
+		   document.getElementById('ma').value = ma;
+		    document.getElementById('gross').value = gross;
+			 document.getElementById('pf').value = pf;
+			  document.getElementById('tax').value = tax;
+			   document.getElementById('net').value = netpay;
+			    
+		
+	}
+	if(y>35000&&y<=60000)
+	{
+		hra=y/100*10;
+		da=y/100*12;
+		ma=y/100*5;
+		gross+hra+da+ma;
+		pf=y/100*11;
+		tax=y/100*4;
+		netpay=gross-pf-tax;
+		 document.getElementById('hra').value = hra;
+		  document.getElementById('da').value = da;
+		   document.getElementById('ma').value = ma;
+		    document.getElementById('gross').value = gross;
+			 document.getElementById('pf').value = pf;
+			  document.getElementById('tax').value = tax;
+			   document.getElementById('net').value = netpay;
+	}
+	else if(y>60000)
+	{
+		hra=y/100*12;
+		da=y/100*12;
+		ma=y/100*7;
+		gross=y+hra+da+ma;
+		pf=y/100*12;
+		tax=y/100*5;
+		netpay=gross-pf-tax;
+		 document.getElementById('hra').value = hra;
+		  document.getElementById('da').value = da;
+		   document.getElementById('ma').value = ma;
+		    document.getElementById('gross').value = gross;
+			 document.getElementById('pf').value = pf;
+			  document.getElementById('tax').value = tax;
+			   document.getElementById('net').value = netpay;
+	}
+            } 
+			/*else {
+                x = Number(document.getElementById('aprice').value);
+                y = Number(obj.value);
+            }
+            z = x * y;
+            document.getElementById('price').value = z;
+            document.getElementById('update').innerHTML = z;
+        }*/
+    </script>
 </head>
-<body align="center">
+<body align="center" onload='loadCategories()'>
      <!-- top-header-section-->
     <div class="top-header">
         <div class="container">
@@ -76,14 +219,14 @@
                                 <li class="has-sub"><a href="#">EMPLOYEE</a>
 								<ul>
                                         <li><a href="adminadd.php">Add Employee</a></li>
-                                        <li><a href="#">Edit Details</a></li>
+                                       <!-- <li><a href="#">Edit Details</a></li>-->
 										<li><a href="adminview.php">View</a></li>
                                     </ul>
 								</li>
 								
                                 <li class="has-sub"><a href="#">LEAVE</a>
 								<ul>
-                                        <li><a href="#">Employee Leave</a></li>
+                                        <li><a href="adminleave.php">Employee Leave</a></li>
                                     </ul>
                                 </li>
                                 
@@ -120,98 +263,71 @@ body{
 background-image:url("images/background.jpeg");
 background-size:1500px,1500px;
 }
+.table1{
+	border-collapse:seperate;
+	border-spacing:15px ;
+}
 </style>
  
 <form method="post" action="">			
-			<table border="1" width="100%" cellpadding="4" cellspacing="5" align="center">
-				<colspan="6" align="center"><font color="blue" style="bold" >EMPLOYEE SALARY</font>
+			<table class="table1" border="0" width="100%" cellpadding="4" cellspacing="5" align="center">
+				<colspan="6" align="center"><font color="black" style="bold" >EMPLOYEE SALARY</font>
 				<!--<tr><td colspan="2" align="center"><font color="green" style="bold"></td>-->
 				<!--<td align="center" colspan="4"><font color="green" style="bold">DEDUCTIONS</td></tr>
 				<tr>
 				<!--<td> Employee ID:</td><td><input type="text" name="txtid"></td>-->
 			    </tr>
 				<tr>
-				<td> LoginId:</td><td><input type="combo" name="txtid"></td>
-				<td> HRA</td><td><input type="text" name="txthra"></td>
+				<td style="padding:9px;"><b> LoginId</b></td><td><select  name="s2" id="categoriesSelect" ></select></td>
+				<td style="padding:9px;"> HRA</td><td><input type="text" id="hra" name="txthra"></td>
 				</tr>
-				
-				<!--<tr>
-				<td>Sex:</td>
-				<td>
-					<input type="radio" name="gender" value="m" checked />Male
-					<input type="radio" name="gender" value="f" />Female
-				</td>-->
-				<!--<td>Date of Join:</td>
-				<td><input type="date" name="doj">
-				</tr>
-				<tr><td>DOB:</td>
-				<td><input type="date" name="datedob">-->
-				
-				<!--<td>Branch:</td><td><input type="text" name="txtbranch"></td>-->
-				<!--<td>Course:</td>
-				<td><select name="district">
-					<option>MCA</option>       
-    					<option>MBA</option>       
-				        <option>B-tech</option>       
-				        <option>M-tech</option>       
-   				        <option>Ernakulam</option>       
-    					<option>Palakadu</option>       
-    					<option>Kozhikode</option>       
-    					<option>Trissur</option>       
-    					<option>Kasrakode</option>       
-    					<option>alapuzha</option>       
-    					<option>iduki</option>       
-    					<option>malapuram</option>       
-    				
-				   </select>	</td>-->
 				   <tr>
-				<td>Name:</td><td><input type="text" name="txtname"></td>
-				<td>DA:</td><td><input type="text" name="txtda"></td>
+				<td style="padding:9px;">Salary</td><td><select name="sl" id="subcatsSelect" onchange="calc(this)"></td>
+				<td style="padding:9px;">DA</td><td><input type="text" id="da" name="txtda"></td>
 				</tr>
 				<tr>
-				<td> Designation:</td><td><input type="text" name="txtdes"></td>
-				<td>MA</td><td><input type="text" name="txtma"></td>
+				<td> </td><td></td>
+				<td style="padding:9px;">MA</td><td><input type="text" id="ma"name="txtma"></td>
 				</tr>
 				<tr>
-			    <td>Department:</td><td><input type="text" name="txtdept"></td>
-				<td>GROSS SALARY</td><td><input type="text"  name="txtgross"></td>
+			    <td></td><td></td>
+				<td style="padding:9px;"><b>GROSS SALARY</b></td><td><input type="text" id="gross" name="txtgross"></td>
 				</tr>
-				<td>Email:</td><td><input type="text" name="txtemail"></td>
+				
+				 
+				<!--<td>Email:</td><td><input type="text" name="txtemail"></td>
 				<!--<td>Total Present Days:</td><td><input type="number" name="txtpresesnt"></td>-->
-				<tr><td>Salary </td><td><input type="text" name="salary"></td></tr>
-			    <tr><td align="center" colspan="4"><font color="green" style="bold">DEDUCTIONS</td></tr>
+				<!--<tr><td>Salary </td><td><input type="text" name="salary"></td></tr>-->
+			    <tr><td align="center" colspan="4"><font color="yellow" style="bold">DEDUCTIONS</td></tr>
 				
-				<tr> <td>PF:</td><td><input type="text" name="txtpf"></tr>
+				<tr> <td style="padding:9px;">PF</td><td><input type="text" id="pf"name="txtpf"></tr>
 			
-				<tr> <td>TAX:</td><td><input type="text" name="txttax"></tr>
+				<tr> <td style="padding:9px;">TAX</td><td><input type="text" id="tax"name="txttax"></tr>
 
-				<tr><td> LEAVE</td><td><input type="text" name="txtleave"></tr>
-				
-				
-				
-                
+				<!--<tr><td> LEAVE</td><td><input type="text" name="txtleave">-->
+				<td style="padding:9px;">Net Pay</td><td><input type="text" id="net" name="netpay"></td>
+				</tr>
 				</table>
+				<br>
 				 <input type="submit" align="center" colspan="2" name="btnSubmit" value="SAVE"></td>
 			
 		</form>
 		
 <?php
+
 if (isset($_POST["btnSubmit"]))
 {
-	//echo "hi";
 include("connection.php");
-$name=$_POST["txtname"];
+$loginid=$_POST["s2"];
 $hra=$_POST["txthra"];
 $da=$_POST["txtda"];
-$designation=$_POST["txtdes"];
 $ma=$_POST["txtma"];
-$depart=$_POST["txtdept"];
 $gross=$_POST["txtgross"];
-$email=$_POST["txtemail"];
-$salary=$_POST["salary"];
+$salary=$_POST["sl"];
 $pf=$_POST["txtpf"];
 $tax=$_POST["txttax"];
-$leave=$_POST["txtleave"];
+//$leave=$_POST["txtleave"];
+$netpay=$_POST["netpay"];
 //$empid=100;
 /*$s=mysqli_query($con,"select * from addemp order by uid desc");
 while($row=mysqli_fetch_array($s))
@@ -222,15 +338,14 @@ while($row=mysqli_fetch_array($s))
 $empid++; */
 //$empid=1;
 //$regdate=date("Y")."-".date("m")."-".date("d");
-//INSERT INTO `userleave`(`loginid`, `leaveid`, `name`, `desih`, `lfrom`, `lto`, `reason`, `ltype`, `mobile`, `email`, `status`),
-$s= "insert into (`loginid`,`leaveid`,`name`, `desih`, `lfrom`, `lto`,`reason`, `ltype`,`mobile`,`basicpay`, `hname`, `hn`, 
-`stname`, `dist`, `strname`, `pdist`, `stat`, `statn`, `pinc`, `pinco`)VALUES('$loginid','$name','$sex','$desig',$mobile,'$dob','$doj','$depart',
-'$email','$pass',$sbasic,'$hname','$hnam','$sn','$dist','$stname','$dis','$state','$st','$pincod','$pin');";
-  //echo $s;
+//INSERT INTO `payroll`(`payid`, `loginid`, `hra`, `da`, `ma`, `gross`, `salary`, `pf`, `tax`, `netpay`)
+
+
+$s= "insert into payroll(`loginid`,`hra`, `da`, `ma`, `gross`, `salary`, `pf`, `tax`, `netpay`)VALUES('$loginid','$hra','$da',
+'$ma','$gross','$salary','$pf','$tax');";
  mysqli_query($con,$s);
-//echo "success";
 //echo $s;
 }
 ?>
-	</body>
+</body>
 </html>

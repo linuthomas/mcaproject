@@ -186,7 +186,7 @@
                 </div>
                 <div class="col-lg-4 col-md-5 col-sm-6 col-xs-12">
                     <ul>
-                        <li><a href="#">Home</a> </li>
+                        <li><a href="adminhome.html">Home</a> </li>
                         <li>|</li>
                         <li><a href="about.html">About us</a> </li>
                         <li>|</li>
@@ -260,7 +260,7 @@
 	<br>
 	<style>
 body{
-background-image:url("images/background.jpeg");
+background-image:url("images/sall.jpg");
 background-size:1500px,1500px;
 }
 .table1{
@@ -271,41 +271,41 @@ background-size:1500px,1500px;
  
 <form method="post" action="">			
 			<table class="table1" border="0" width="100%" cellpadding="4" cellspacing="5" align="center">
-				<colspan="6" align="center"><font color="black" style="bold" >EMPLOYEE SALARY</font>
+				<colspan="6" align="center"><font color="black" style="bold" ></font>
 				<!--<tr><td colspan="2" align="center"><font color="green" style="bold"></td>-->
 				<!--<td align="center" colspan="4"><font color="green" style="bold">DEDUCTIONS</td></tr>
 				<tr>
 				<!--<td> Employee ID:</td><td><input type="text" name="txtid"></td>-->
 			    </tr>
 				<tr>
-				<td style="padding:9px;"><b> LoginId</b></td><td><select  name="s2" id="categoriesSelect" ></select></td>
-				<td style="padding:9px;"> HRA</td><td><input type="text" id="hra" name="txthra"></td>
+				<td style="padding:9px;"><font color="white"/><b/> LoginId</td><td><select  name="s2" id="categoriesSelect" ></select></td>
+				<td style="padding:9px;"><font color="indigo"/><b/>HRA</td><td><input type="text" id="hra" name="txthra"></td>
 				</tr>
 				   <tr>
-				<td style="padding:9px;">Salary</td><td><select name="sl" id="subcatsSelect" onchange="calc(this)"></td>
-				<td style="padding:9px;">DA</td><td><input type="text" id="da" name="txtda"></td>
+				<td style="padding:9px;"><font color="white"/><b/>Salary</td><td><select name="sl" id="subcatsSelect" onchange="calc(this)"></td>
+				<td style="padding:9px;"><font color="indigo"/><b/>DA</td><td><input type="text" id="da" name="txtda"></td>
 				</tr>
 				<tr>
 				<td> </td><td></td>
-				<td style="padding:9px;">MA</td><td><input type="text" id="ma"name="txtma"></td>
+				<td style="padding:9px;"><font color="indigo"/><b/>MA</td><td><input type="text" id="ma"name="txtma"></td>
 				</tr>
 				<tr>
 			    <td></td><td></td>
-				<td style="padding:9px;"><b>GROSS SALARY</b></td><td><input type="text" id="gross" name="txtgross"></td>
+				<td style="padding:9px;"><font color="black"/><b/>GROSS SALARY</td><td><input type="text" id="gross" name="txtgross"></td>
 				</tr>
 				
 				 
 				<!--<td>Email:</td><td><input type="text" name="txtemail"></td>
 				<!--<td>Total Present Days:</td><td><input type="number" name="txtpresesnt"></td>-->
 				<!--<tr><td>Salary </td><td><input type="text" name="salary"></td></tr>-->
-			    <tr><td align="center" colspan="4"><font color="yellow" style="bold">DEDUCTIONS</td></tr>
+			    <tr><td><td align="center" colspan="4"><font color="indigo" style="bold" size="5">DEDUCTIONS</td></td></tr>
 				
-				<tr> <td style="padding:9px;">PF</td><td><input type="text" id="pf"name="txtpf"></tr>
+				<tr> <td><td><td style="padding:9px;"><font color="indigo"/><b/>PF</td></td></td><td><input type="text" id="pf"name="txtpf"></tr>
 			
-				<tr> <td style="padding:9px;">TAX</td><td><input type="text" id="tax"name="txttax"></tr>
+				<tr> <td><td><td style="padding:9px;"><font color="indigo"/><b/>TAX</td></td></td><td><input type="text" id="tax"name="txttax"></tr>
 
 				<!--<tr><td> LEAVE</td><td><input type="text" name="txtleave">-->
-				<td style="padding:9px;">Net Pay</td><td><input type="text" id="net" name="netpay"></td>
+				<td><td><td style="padding:9px;"><font color="black"/><b/>NET PAY</td></td></td><td><input type="text" id="net" name="netpay"></td>
 				</tr>
 				</table>
 				<br>
@@ -314,7 +314,6 @@ background-size:1500px,1500px;
 		</form>
 		
 <?php
-
 if (isset($_POST["btnSubmit"]))
 {
 include("connection.php");
@@ -328,21 +327,9 @@ $pf=$_POST["txtpf"];
 $tax=$_POST["txttax"];
 //$leave=$_POST["txtleave"];
 $netpay=$_POST["netpay"];
-//$empid=100;
-/*$s=mysqli_query($con,"select * from addemp order by uid desc");
-while($row=mysqli_fetch_array($s))
-{
-  $empid=$row[0];
-  break;
-}
-$empid++; */
-//$empid=1;
-//$regdate=date("Y")."-".date("m")."-".date("d");
 //INSERT INTO `payroll`(`payid`, `loginid`, `hra`, `da`, `ma`, `gross`, `salary`, `pf`, `tax`, `netpay`)
-
-
-$s= "insert into payroll(`loginid`,`hra`, `da`, `ma`, `gross`, `salary`, `pf`, `tax`, `netpay`)VALUES('$loginid','$hra','$da',
-'$ma','$gross','$salary','$pf','$tax');";
+$s= "insert into payroll(`loginid`,`hra`, `da`, `ma`, `gross`, `salary`, `pf`, `tax`, `netpay`)
+VALUES('$loginid',$hra,$da,$ma,$gross,$salary,$pf,$tax,$netpay);";
  mysqli_query($con,$s);
 //echo $s;
 }

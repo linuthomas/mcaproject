@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -90,7 +93,7 @@
 								
                                 <li class="has-sub"><a href="#">PAYROLL</a>
 								<ul>
-                                        <li><a href="#">View Salary</a></li>
+                                        <li><a href="usersalaryview.php">View Salary</a></li>
                                     </ul>
                                 </li>
                                 
@@ -108,7 +111,7 @@
                                 </li>-->
 								<li class="has-sub"><a href="#">TRAININGS</a>
 								<ul>
-                                        <li><a href="#">New Training</a></li>
+                                        <li><a href="usertrainingview.php">New Training</a></li>
                                         <!--<li><a href="#">Employee Recruitments</a></li>-->
                                     </ul>
                                 </li>
@@ -135,24 +138,22 @@ background-size:1500px,1500px;
 </style>
 <?php
 include("connection.php");
-$sql="select lfrom,lto,ltype,status from userleave;";
+$loginid=$_SESSION['loginid'];
+$sql="select loginid,reason,ltype,nod,status from userleave WHERE loginid='$loginid';";
 $res=mysqli_query($con,$sql);
-echo "<table border ='1' cellspacing=3 width=100% height=100% align='center' style=margin:90px; bgcolor=#f7aa77>
+echo "<table border ='0' cellspacing=3 width=100% height=100% align='center' style=margin:90px; bgcolor=#f7aa77>
 <tr><colspan=12><font size=15 color=white >LEAVE STATUS</font></th></tr>
-<tr><th>LEAVE FROM</th><th>TO</th><th>LEAVE TYPE</th><th>STATUS</th></tr>";
- if(mysqli_num_rows($res)>0)
- {
- while($row=$res->fetch_assoc())
+<tr><th>REASON</th><th>LEAVE TYPE</th><th>NUM.OF LEAVES</th><th>STATUS</th></tr>";
+// if(mysqli_num_rows($res)>0)
+ //{
+ while($row=mysqli_fetch_array($res))
   {
-	  //$loginid=$row['loginid'];
-	 // echo $loginid;
-	  
+	  //echo $loginid;
 	 
-  echo "<tr><td>".$row["lfrom"]."</td><td>".$row["lto"]."</td><td>".$row["ltype"]."
+  echo "<tr><td>".$row["reason"]."</td><td>".$row["ltype"]."</td><td>".$row["nod"]."
   </td><td>".$row["status"]."</td>	
  </tr>";  
    }
- }
-
  echo"</table>"
   ?>
+ 

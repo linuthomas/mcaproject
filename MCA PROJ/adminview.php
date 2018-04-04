@@ -122,7 +122,7 @@
 	<br>
 	<style>
 body{
-background-image:url("images/background.jpeg");
+background-image:url("images/bbb.jpg");
 background-size:1500px,1500px;
 }
 </style>
@@ -132,25 +132,25 @@ include("connection.php");
 $sql="select * from addemp;";
 $res=mysqli_query($con,$sql);
 echo "<table border ='1' cellspacing=3 width=100% height=100% align='center' style=margin:90px; bgcolor=#f7aa77>
-<tr><colspan=12><font size=15 color=white >EMPLOYEE LIST</font></th></tr>
-<tr><th>Name</th><th>Designation</th><th>Mobile</th><th>DOB</th><th>DOJ</th><th>
+<tr colspan=12><font size=15 color=white>EMPLOYEE LIST</font></tr>
+<tr><th>Login id</th><th>Name</th><th>Designation</th><th>Mobile</th><th>DOB</th><th>DOJ</th><th>
 Department</th><th>Email</th><th>Salary</th><th>House name</th><th>Pre.Housename</th><th>Street name</th><th>
-District</th><th>pre.Streetname</th><th>Pre.District</th><th>State</th><th>per.State</th><th>Pincode</th><th>P.pincode</tr>";
+District</th><th>pre.Streetname</th><th>Pre.District</th><th>State</th><th>per.State</th><th>Pincode</th><th>P.pincode</th></tr>";
  if(mysqli_num_rows($res)>0)
  {
  while($row=$res->fetch_assoc())
   {
 	  $loginid=$row['loginid'];
-	 // echo $loginid;
-	  
-	 
-  echo "<tr><td>".$row["name"]."</td><td>".$row["designation"]."</td><td>".$row["mob"]
+	 // echo $loginid;	 
+  echo "<tr><td>".$row["loginid"]."</td><td>".$row["name"]."</td><td>".$row["designation"]."</td><td>".$row["mob"]
   ."</td><td>".$row["dob"]."</td><td>".$row["doj"]."</td><td>".$row["department"]."</td><td>".$row["email"].
   "</td><td>".$row["basicpay"]."</td><td>".$row["hname"]."</td><td>".$row["hn"]."</td><td>".$row["stname"]."</td><td>".$row["dist"].
   "</td><td>".$row["strname"]."</td><td>".$row["pdist"]."</td><td>".$row["stat"]."</td><td>".$row["statn"]."</td><td>".$row["pinc"].
   "</td><td>".$row["pinco"]."</td>
   <td>
- <a href='admindelete.php?logid=".$row["loginid"]."'>Delete</a></td>
+ <a href='admindelete.php?logid=".$row["loginid"]."'>DELETE</a></td>
+ <td><a href='adminedit1.php?lid=".$row["loginid"]."'>EDIT</a></td>
+ 
  </tr>";	 
    }
  }

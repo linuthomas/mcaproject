@@ -1,5 +1,6 @@
 <?php
 session_start();
+$loginid= $_SESSION["loginid"];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -93,7 +94,7 @@ session_start();
 								
                                 <li class="has-sub"><a href="#">PAYROLL</a>
 								<ul>
-                                        <li><a href="#">View Salary</a></li>
+                                        <li><a href="usersalaryview.php">View Salary</a></li>
                                     </ul>
                                 </li>
                                 
@@ -111,7 +112,7 @@ session_start();
                                 </li>-->
 								<li class="has-sub"><a href="#">TRAININGS</a>
 								<ul>
-                                        <li><a href="#">New Training</a></li>
+                                        <li><a href="usertrainingview.php">New Training</a></li>
                                         <!--<li><a href="#">Employee Recruitments</a></li>-->
                                     </ul>
                                 </li>
@@ -132,21 +133,21 @@ session_start();
 	<br>
 	<style>
 body{
-background-image:url("images/leavee.jpg");
+background-image:url("images/ll.jpg");
 background-size:1500px,1500px;
 }
 </style>
  
 <form method="post" action="">			
-			<table border="1" width="100%" cellpadding="4" cellspacing="5" align="center">
+			<table border="0" width="100%" cellpadding="4" cellspacing="5" align="center">
 				<!--<colspan="6" align="center"><font color="blue" style="bold" >ADD EMPLOYEE</font>
 				<tr><td colspan="2" align="center"><font color="green" style="bold">PERSONAL DETAILS</td>
 				<td align="center" colspan="4"><font color="green" style="bold">JOB DETAILS</td></tr>
 				<tr>
 				<!--<td> Employee ID:</td><td><input type="text" name="txtid"></td>-->
 				
-				<tr><td> <b>Name:</b></td><td><input type="text" name="txtname"></td>
-				<td><b>Designation:</b></td>
+				<tr><td style="padding:9px;"> <b>Name:</b></td><td><input type="text" name="txtname"></td>
+				<td style="padding:9px;"><b>Designation:</b></td>
 				<td>
 				<select name="txtdes">
 				<option>Application Developer</option>
@@ -163,15 +164,14 @@ background-size:1500px,1500px;
 				</tr>
 				
 				<tr>
-				<td><b>Leave from:</b></td>
-				<td><input type="date" name="fromdate">
-				<td><b>To:</b></td>
-				<td><input type="date" name="todate"></td>
+				<td style="padding:9px;"><b>No.of Leaves</b></td>
+				<td><input type="number" name="nod">
+				</td>
 				</tr>
 				<tr>
-				<td><b>Reason for Leave</b></td>
+				<td style="padding:9px;" ><b>Reason for Leave</b></td>
 				<td><textarea name="reason" rows="5" cols="40"></textarea></td>
-				<td><b>Leave Type:</b></td>
+				<td style="padding:9px;"><b>Leave Type:</b></td>
 				<td>
 				<select name="txtltype">
 				<option>Casual</option>
@@ -179,51 +179,77 @@ background-size:1500px,1500px;
 				</select>
 				</tr>
 				<tr>
-				<td><b>Mobile Number during Leave:</b></td>
+				<td style="padding:9px;"><b>Mobile Number during Leave:</b></td>
 				<td>
 				<input type="number" name="txtphn"></td>
-				<tr><td><b>Email:</b></td><td><input type="text" name="txtemail"></td>
+				<tr><td style="padding:9px;"><b>Email:</b></td><td><input type="email" name="txtemail"></td>
 				</tr>	
 			</table>
+			<?php 
+			include("connection.php");
+			$q="select * from userleave where loginid='$loginid'";
+$f=mysqli_query($con,$q);
+while($rw=mysqli_fetch_array($f))
+{
+$a=$rw['allot'];
+$n=$rw['nod'];
+//echo $a;
+$t=$a+$n; 
+}
+?>
 			<br>
 			<input type="submit" align="center" name="btnSubmit" value="SEND">
 			<input type="submit" align="center" name="btncancel" value="CANCEL">
 		</form>
 <?php
-include("connection.php");
-
 if (isset($_POST["btnSubmit"]))
 {
-	//echo "hi";
+include("connection.php");
 
-$loginid=$_SESSION['loginid'];
+$loginid= $_SESSION["loginid"];
 $name=$_POST["txtname"];
 $designation=$_POST["txtdes"];
-$lfrom=$_POST["fromdate"];
-$lto=$_POST["todate"];
+$nod=$_POST["nod"];
 $reason=$_POST["reason"];
 $ltype=$_POST["txtltype"];
 $mob=$_POST["txtphn"];
 $email=$_POST["txtemail"];
-/*$empid=100;
-$s=mysqli_query($con,"select * from addemp order by empid desc");
-while($row=mysqli_fetch_array($s))
-{
-  $empid=$row[0];
-  break;
-  $empid++; 
-}*/
 
-//$empid=1;
-//$regdate=date("Y")."-".date("m")."-".date("d");
-//$s=INSERT INTO `userleave`( `name`, `desih`, `lfrom`, `lto`, `reason`, `mobile`, `email`) VALUES ([value-1],[value-2],[value-3],[value-4],
-//[value-5],[value-6],[value-7],[value-8])
-$s= "insert into userleave (`loginid`,`name`, `desih`, `lfrom`, `lto`, `reason`,`ltype`,`mobile`, `email`)VALUES('$loginid','$name','$designation','$lfrom','$lto','$reason',
-'$ltype',$mob,'$email');";
+$q="select nod,allot from userleave where loginid='$loginid'";
+$f=mysqli_query($con,$q);
+$rw=mysqli_fetch_assoc($f);
+$a=$rw['allot'];
+$n=$rw['nod'];
+$t=$a+$n;
+if($t>4)
+{
+	echo "<script>var confirm = confirm(\"Leave limit exceeded\");
+          if(confirm){ 
+              window.location='userleave.php';
+           }
+		   else{
+			   window.location='userleave.php';
+		   }
+          </script>";
+}
+else{
+
+
+$s= "insert into userleave(`loginid`,`name`,`desih`,`reason`,`nod`,`ltype`,`mobile`,`email`)VALUES('$loginid','$name','$designation',
+'$reason',$nod,'$ltype',$mob,'$email');";
 //echo $s;
  mysqli_query($con,$s);
+ echo "<script>var confirm = confirm(\"Request have been sent\");
+          if(confirm){ 
+              window.location='userleave.php';
+           }
+		   else{
+			   window.location='userleave.php';
+		   }
+          </script>";
 //echo $s;
 }
+}
 ?>
-	</body>
+ </body>
 </html>
